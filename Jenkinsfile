@@ -10,10 +10,10 @@ pipeline {
       steps {
         script {
           if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
-            def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
-            echo eventTriggerCause
+            env.eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
+            echo env.eventTriggerCause
             def containerImage = sh(script: '''
-               echo $eventTriggerCause | jq '.image'
+               $env.eventTriggerCause | jq '.image'
             ''', returnStdout: true)
             echo containerImage
           }
