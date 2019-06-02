@@ -2,7 +2,7 @@ pipeline {
   agent { label 'default-jnlp' }
   
   triggers {
-    eventTrigger jmespathQuery("eventName=='containerImagePush'")
+    eventTrigger jmespathQuery("eventType=='containerImagePush'")
   }
   
   stages {
