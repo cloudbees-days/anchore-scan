@@ -9,7 +9,9 @@ pipeline {
     stage('Anchore Scan') {
       steps {
         script {
-          echo currentBuild.getBuildCauses()[0].event.source.toString()
+          if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
+            echo currentBuild.getBuildCauses()[0].event.toString()
+          }
         }
       }
     }
