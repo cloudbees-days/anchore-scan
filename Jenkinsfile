@@ -1,5 +1,3 @@
-def buildUrl = env.BUILD_URL
-def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
 eventTrigger(jmespathQuery("eventType=='containerImagePush'"))
 
 node('default-jnlp') {
@@ -10,6 +8,8 @@ node('default-jnlp') {
     //echo eventTriggerCause
     //stash name: "json", includes: "eventTriggerCause.json"
     //unstash "json"
+    def buildUrl = env.BUILD_URL
+    def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
     def containerImage = sh(script: '''
       echo $buildUrl
       echo $eventTriggerCause
