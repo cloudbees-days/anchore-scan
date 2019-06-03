@@ -28,6 +28,7 @@ spec:
       //echo eventTriggerCause
       //stash name: "json", includes: "eventTriggerCause.json"
       //unstash "json"
+      checkout scm
       withCredentials([string(credentialsId: 'beedemo-admin-api-key', variable: 'TOKEN')]) {
         def containerImage = sh(script: """
            curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
