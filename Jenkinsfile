@@ -2,7 +2,23 @@ eventTrigger(jmespathQuery("eventType=='containerImagePush'"))
 
 def label = "docker-${UUID.randomUUID().toString()}"
 
-podTemplate(label: label, yamlFile: "dockerPod.yml") {
+podTemplate(label: label, yaml: """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:1.11
+    command: ['cat']
+    tty: true
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+""") {
 
   node(label) {
     if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
