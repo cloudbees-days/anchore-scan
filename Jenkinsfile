@@ -34,8 +34,11 @@ spec:
            curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
         """, returnStdout: true)
         echo containerImage
+      }
+      withCredentials([usernamePassword(credentialsId: 'beedemo-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         container('docker'){
           sh "ls -la"
+          sh "docker login -u ${USERNAME} -p ${PASSWORD}
           sh "docker pull ${containerImage}"
           sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json ${containerImage}"
         }
