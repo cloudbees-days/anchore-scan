@@ -12,7 +12,7 @@ pipeline {
           if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
             writeFile file: "eventTriggerCause.json", text: currentBuild.getBuildCauses()[0].event.toString()
             def containerImage = sh(script: """
-               $(pwd)/eventTriggerCause.json | jq '.image'
+               $pwd/eventTriggerCause.json | jq '.image'
             """, returnStdout: true)
             echo containerImage
           }
