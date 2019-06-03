@@ -8,14 +8,12 @@ node('default-jnlp') {
     //echo eventTriggerCause
     //stash name: "json", includes: "eventTriggerCause.json"
     //unstash "json"
-    def buildUrl = env.BUILD_URL
     def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
-    echo buildUrl
+    def escapedEventTriggerCause = groovy.json.JsonOutput.toJson(eventTriggerCause).replace("\"", "\\\"")
     echo eventTriggerCause
     def containerImage = sh(script:"""
-      echo $buildUrl
-      echo $eventTriggerCause
-      curl --silent $buildUrl/api/json | jq '.image'
+      echo $escapedEventTriggerCause
+      $escapedEventTriggerCause | jq '.image'
     """, returnStdout: true)
     echo containerImage
   }
