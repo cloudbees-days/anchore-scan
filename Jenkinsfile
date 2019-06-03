@@ -36,7 +36,8 @@ spec:
         echo containerImage
         container('docker'){
           sh "ls -la"
-          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}"
+          sh "docker pull ${containerImage}"
+          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json ${containerImage}"
         }
       }
     }
