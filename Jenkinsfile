@@ -38,7 +38,7 @@ spec:
       withCredentials([usernamePassword(credentialsId: 'beedemo-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         container('docker'){
           sh "ls -la"
-          sh "docker login -u ${USERNAME} -p ${PASSWORD}
+          sh "docker login -u ${USERNAME} -p ${PASSWORD}"
           sh "docker pull ${containerImage}"
           sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json ${containerImage}"
         }
