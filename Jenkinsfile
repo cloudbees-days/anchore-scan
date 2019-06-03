@@ -17,7 +17,8 @@ pipeline {
             //stash name: "json", includes: "eventTriggerCause.json"
             //unstash "json"
             def containerImage = sh(script: '''
-              curl --silent $BULD_URL/api/json | jq '.image'
+              echo $env.BULD_URL
+              curl --silent $env.BULD_URL/api/json | jq '.image'
             ''', returnStdout: true)
             echo containerImage
           }
