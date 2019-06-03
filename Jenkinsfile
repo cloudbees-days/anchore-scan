@@ -12,7 +12,7 @@ node('default-jnlp') {
     def escapedEventTriggerCause = groovy.json.JsonOutput.toJson(eventTriggerCause).replace("\\\"", "\\\"")
     echo escapedEventTriggerCause
     def containerImage = sh(script: """
-      $escapedEventTriggerCause | jq '.image'
+      $escapedEventTriggerCause | jq .image
     """, returnStdout: true)
     echo containerImage
   }
