@@ -18,11 +18,11 @@ pipeline {
             //echo eventTriggerCause
             //stash name: "json", includes: "eventTriggerCause.json"
             //unstash "json"
-            def containerImage = sh(script: """
-              echo ${buildUrl}
-              echo ${eventTriggerCause}
-              curl --silent ${buildUrl}/api/json | jq '.image'
-            """, returnStdout: true)
+            def containerImage = sh(script: '''
+              echo $buildUrl
+              echo $eventTriggerCause
+              curl --silent $buildUrl/api/json | jq '.image'
+            ''', returnStdout: true)
             echo containerImage
           }
         }
