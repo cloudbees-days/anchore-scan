@@ -36,12 +36,8 @@ spec:
         """, returnStdout: true)
         echo containerImage
       }
-      withDockerRegistry('', 'beedemo-docker-hub') {
-        container('docker'){
-          sh "ls -la"
-          sh "docker pull ${containerImage}"
-          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json ${containerImage}"
-        }
+      container('docker'){
+        sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}"
       }
     }
   }
