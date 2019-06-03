@@ -10,10 +10,10 @@ node('default-jnlp') {
     //unstash "json"
     def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
     def escapedEventTriggerCause = groovy.json.JsonOutput.toJson(eventTriggerCause).replace(""", "\\"")
-    echo eventTriggerCause
+    echo escapedEventTriggerCause
     def containerImage = sh(script:"""
-      echo $escapedEventTriggerCause
-      $escapedEventTriggerCause | jq '.image'
+      echo ${escapedEventTriggerCause}
+      ${escapedEventTriggerCause} | jq '.image'
     """, returnStdout: true)
     echo containerImage
   }
