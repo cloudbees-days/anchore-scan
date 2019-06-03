@@ -10,7 +10,7 @@ node('default-jnlp') {
     //unstash "json"
     withCredentials([string(credentialsId: 'beedemo-admin-api-key', variable: 'TOKEN')]) {
       def containerImage = sh(script: """
-         curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.image'
+         curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
       """, returnStdout: true)
       echo containerImage
     }
