@@ -14,8 +14,8 @@ pipeline {
             stash name: "json", includes: "eventTriggerCause.json"
             unstash "json"
             def containerImage = sh(script: """
-              ls
-              $pwd/eventTriggerCause.json | jq '.image'
+              ls ${pwd()}
+              ${pwd()}/eventTriggerCause.json | jq '.image'
             """, returnStdout: true)
             echo containerImage
           }
