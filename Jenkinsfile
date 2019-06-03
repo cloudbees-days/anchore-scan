@@ -34,7 +34,7 @@ spec:
         """, returnStdout: true)
         echo containerImage
         container('docker'){
-          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -p ./policy-bundle.json ${containerImage}"
+          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./policy-bundle.json -p ${containerImage}"
         }
       }
     }
