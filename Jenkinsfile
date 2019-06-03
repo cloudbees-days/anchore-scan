@@ -8,6 +8,7 @@ pipeline {
   stages {
     stage('Anchore Scan') {
       steps {
+        buildUrl = env.BUILD_URL
         script {
           if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
             //sh 'ls'
@@ -17,8 +18,8 @@ pipeline {
             //stash name: "json", includes: "eventTriggerCause.json"
             //unstash "json"
             def containerImage = sh(script: """
-              echo ${BULD_URL}
-              curl --silent ${BULD_URL}/api/json | jq '.image'
+              echo ${buildUrl}
+              curl --silent ${buildUrl}/api/json | jq '.image'
             """, returnStdout: true)
             echo containerImage
           }
