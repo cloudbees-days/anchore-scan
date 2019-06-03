@@ -13,6 +13,7 @@ node('default-jnlp') {
          curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
       """, returnStdout: true)
       echo containerImage
+      sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -p ./policy-bundle.json ${containerImage}"
     }
   }
 }
