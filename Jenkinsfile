@@ -36,10 +36,10 @@ spec:
         """, returnStdout: true)
         echo containerImage
       }
-      withCredentials([usernamePassword(credentialsId: 'beedemo-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+      withDockerRegistry('', 'beedemo-docker-hub') {
         container('docker'){
           sh "ls -la"
-          sh "docker logout && docker login -u ${USERNAME} -p ${PASSWORD} && docker pull ${containerImage}"
+          sh "docker pull ${containerImage}"
           sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json ${containerImage}"
         }
       }
