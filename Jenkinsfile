@@ -2,7 +2,7 @@ def buildUrl = env.BUILD_URL
 def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
 eventTrigger(jmespathQuery("eventType=='containerImagePush'"))
 
-node('label 'default-jnlp') {
+node('default-jnlp') {
   if (currentBuild.getBuildCauses("com.cloudbees.jenkins.plugins.pipeline.events.EventTriggerCause").size() > 0) {
     //sh 'ls'
     //writeFile file: "eventTriggerCause.json", text: currentBuild.getBuildCauses()[0].event.toString()
