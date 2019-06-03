@@ -11,8 +11,7 @@ node('default-jnlp') {
     def eventTriggerCause = currentBuild.getBuildCauses()[0].event.toString()
     def escapedEventTriggerCause = groovy.json.JsonOutput.toJson(eventTriggerCause).replace(""", "\\"")
     echo escapedEventTriggerCause
-    def containerImage = sh(script:"""
-      echo ${escapedEventTriggerCause}
+    def containerImage = sh(script: """
       ${escapedEventTriggerCause} | jq '.image'
     """, returnStdout: true)
     echo containerImage
