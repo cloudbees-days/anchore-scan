@@ -8,9 +8,11 @@ node('default-jnlp') {
     //echo eventTriggerCause
     //stash name: "json", includes: "eventTriggerCause.json"
     //unstash "json"
-    def containerImage = sh(script: """
-       curl -s -D "/dev/stderr" --silent ${BUILD_URL}/api/json| jq ".image"
-    """, returnStdout: true)
-    echo containerImage
+    withCredentials([string(credentialsId: 'beedemo-admin-api-key', variable: 'TOKEN')]) {
+      def containerImage = sh(script: """
+         curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.image'
+      """, returnStdout: true)
+      echo containerImage
+    }
   }
 }
