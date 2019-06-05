@@ -3,7 +3,7 @@ kind: Pod
 spec:
   containers:
   - name: docker
-    image: docker:1.11
+    image: gcr.io/technologists/docker-client:0.0.3
     command: ['cat']
     tty: true
     volumeMounts:
