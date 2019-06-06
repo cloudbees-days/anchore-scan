@@ -19,17 +19,18 @@ pipeline {
         triggeredBy 'EventTriggerCause' 
         beforeAgent true
       }
+      environment {
+        TOKEN = credentials('beedemo-admin-api-key')
+      }
       steps {
         script {
-          withCredentials([string(credentialsId: 'beedemo-admin-api-key', variable: 'TOKEN')]) {
-            containerImage = sh(script: """
-               curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
-            """, returnStdout: true)
-          }
-          echo containerImage
-          container('docker-client'){
-            sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}"
-          }
+          containerImage = sh(script: """
+             curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json| jq '.actions[0].causes[0].event.image'
+          """, returnStdout: true)
+        }
+        echo containerImage
+        container('docker-client'){
+          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}"
         }
       }
     }
