@@ -1,4 +1,3 @@
-def label = "docker-client-${UUID.randomUUID().toString()}"
 def containerImage
 pipeline {
   agent none
@@ -11,7 +10,7 @@ pipeline {
     stage('Anchore Scan') {
       agent {
         kubernetes {
-          label "$label"
+          label 'docker-client'
           yamlFile 'dockerClientPod.yml'
         }
       }
