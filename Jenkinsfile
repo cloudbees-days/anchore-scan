@@ -1,6 +1,9 @@
 def containerImage
 pipeline {
   agent none
+  options { 
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+  }
 
   triggers {
       eventTrigger jmespathQuery("eventType=='containerImagePush'")
