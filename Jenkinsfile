@@ -1,6 +1,6 @@
 def containerImage
 pipeline {
-  agent none
+  agent any
   options { 
     buildDiscarder(logRotator(numToKeepStr: '20'))
   }
@@ -11,12 +11,6 @@ pipeline {
   
   stages {
     stage('Anchore Scan') {
-      agent {
-        kubernetes {
-          label 'docker-client'
-          yamlFile 'dockerClientPod.yml'
-        }
-      }
       when { 
         triggeredBy 'EventTriggerCause' 
         beforeAgent true
@@ -31,9 +25,8 @@ pipeline {
           """, returnStdout: true)
         }
         echo containerImage
-        container('docker-client'){
-          sh "curl -s https://ci-tools.anchore.io/inline_scan-v0.3.3 | bash -s -- -f -b ./.anchore_policy.json -p ${containerImage}"
-        }
+        writeFile file: anchorefile, text: containerImage
+        anchore name: anchorefile, engineurl: 'http://anchore-anchore-engine-api.svc.cluster.local', engineCredentialsId: 'anchore-engine-creds', annotations: [[key: 'added-by', value: 'jenkins']]
       }
     }
   }
