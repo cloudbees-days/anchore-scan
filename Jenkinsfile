@@ -25,7 +25,7 @@ pipeline {
           """, returnStdout: true)
         }
         echo containerImage
-        writeFile file: anchorefile, text: containerImage
+        writeFile file: 'anchore_images', text: containerImage
         anchore name: anchorefile, engineurl: 'http://anchore-anchore-engine-api.svc.cluster.local', engineCredentialsId: 'anchore-engine-creds', annotations: [[key: 'added-by', value: 'jenkins']]
       }
     }
