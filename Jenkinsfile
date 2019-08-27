@@ -26,7 +26,7 @@ pipeline {
         }
         echo containerImage
         writeFile file: 'anchore_images', text: containerImage
-        anchore name: 'anchore_images', engineurl: 'http://engine-analyzer:8228', engineCredentialsId: 'anchore-engine-creds', annotations: [[key: 'added-by', value: 'jenkins']]
+        anchore name: 'anchore_images', engineurl: 'http://anchore-demo-anchore-engine.default.svc.cluster.local:8228/v1/', engineCredentialsId: 'anchore-engine-creds', annotations: [[key: 'added-by', value: 'jenkins']]
       }
     }
   }
