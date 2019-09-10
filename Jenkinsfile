@@ -16,12 +16,12 @@ pipeline {
         beforeAgent true
       }
       environment {
-        TOKEN = credentials('beedemo-admin-api-key')
+        JENKINS_CLI = credentials('cli-username-token')
       }
       steps {
         script {
           containerImage = sh(script: """
-             curl -u 'beedemo-admin':$TOKEN --silent ${BUILD_URL}/api/json | jq -r '.actions[0].causes[0].event.image'
+             curl -u $JENKINS_CLI_USR:$JENKINS_CLI_PSW --silent ${BUILD_URL}api/json | jq -r '.actions[0].causes[0].event.image'
           """, returnStdout: true)
         }
         echo containerImage
